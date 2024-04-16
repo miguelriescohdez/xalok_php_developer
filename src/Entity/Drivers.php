@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\DriversRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: DriversRepository::class)]
@@ -21,6 +23,17 @@ class Drivers
 
     #[ORM\Column(length: 1)]
     private ?string $license = null;
+
+    /**
+     * @var Collection<int, Trip>
+     */
+    #[ORM\OneToMany(targetEntity: Trip::class, mappedBy: 'driver')]
+    private Collection $trips;
+
+    public function __construct()
+    {
+        $this->trips = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -66,6 +79,36 @@ class Drivers
     public function setLicense(string $license): static
     {
         $this->license = $license;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Trip>
+     */
+    public function getTrips(): Collection
+    {
+        return $this->trips;
+    }
+
+    public function addTrip(Trip $trip): static
+    {
+        if (!$this->trips->contains($trip)) {
+            $this->trips->add($trip);
+            $trip->setDriver($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTrip(Trip $trip): static
+    {
+        if ($this->trips->removeElement($trip)) {
+            // set the owning side to null (unless already changed)
+            if ($trip->getDriver() === $this) {
+                $trip->setDriver(null);
+            }
+        }
 
         return $this;
     }
