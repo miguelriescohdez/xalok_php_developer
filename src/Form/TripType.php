@@ -16,15 +16,24 @@ class TripType extends AbstractType
     {
         $builder
             ->add('date', null, [
-                'widget' => 'single_text'
+                'widget' => 'single_text',
+                'attr' => [
+                    'class' => 'form-control',
+                ]
             ])
             ->add('vehicle', EntityType::class, [
                 'class' => Vehicles::class,
-'choice_label' => 'id',
+                'choice_label' => 'brand',
+                'attr' => [
+                    'class' => 'form-control',
+                ]
             ])
             ->add('driver', EntityType::class, [
                 'class' => Drivers::class,
-'choice_label' => 'id',
+                'choice_label' => 'name',
+                'attr' => [
+                    'class' => 'form-control',
+                ]
             ])
         ;
     }

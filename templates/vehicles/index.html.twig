@@ -3,9 +3,12 @@
 {% block title %}Vehicles index{% endblock %}
 
 {% block body %}
-    <h1>Vehicles index</h1>
-
-    <table class="table">
+<div class="container">
+    <div class="d-flex justify-content-between align-items-center mt-4">
+        <h1 class="text-light">Vehicles index</h1> 
+        <a class="btn btn-primary py-2 px-4" href="{{ path('app_vehicles_new') }}">Create new</a>
+    </div>
+    <table class="my-4 table table-light table-striped">
         <thead>
             <tr>
                 <th>Id</th>
@@ -25,8 +28,7 @@
                 <td>{{ vehicle.plate }}</td>
                 <td>{{ vehicle.licenseRequired }}</td>
                 <td>
-                    <a href="{{ path('app_vehicles_show', {'id': vehicle.id}) }}">show</a>
-                    <a href="{{ path('app_vehicles_edit', {'id': vehicle.id}) }}">edit</a>
+                    <a class="btn btn-primary" href="{{ path('app_vehicles_edit', {'id': vehicle.id}) }}">edit</a>
                 </td>
             </tr>
         {% else %}
@@ -37,5 +39,5 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_vehicles_new') }}">Create new</a>
+</div>
 {% endblock %}

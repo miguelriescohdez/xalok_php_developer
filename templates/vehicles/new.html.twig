@@ -3,9 +3,19 @@
 {% block title %}New Vehicles{% endblock %}
 
 {% block body %}
-    <h1>Create new Vehicles</h1>
-
-    {{ include('vehicles/_form.html.twig') }}
-
-    <a href="{{ path('app_vehicles_index') }}">back to list</a>
+<div class="form-body">
+    <div class="row">
+        <div class="form-holder">
+            <div class="form-content">
+                <div class="form-items">
+                    <h3 class="mb-3">Add New Vehicle</h3>
+                    {{ include('vehicles/_form.html.twig') }}
+                </div>
+                <div class="d-flex align-items-center justify-content-center my-4">
+                    <a class="btn btn-primary" href="{{ path('app_vehicles_index') }}">back to list</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

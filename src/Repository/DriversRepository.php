@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Drivers;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\ORM\Query;
 
 /**
  * @extends ServiceEntityRepository<Drivers>
@@ -21,6 +22,21 @@ class DriversRepository extends ServiceEntityRepository
         parent::__construct($registry, Drivers::class);
     }
 
+    /**
+    * @return Drivers[] Returns an array of Vehicles 
+    */
+    public function findByAvailableDate($date, $license) : array {
+
+        return $this->createQueryBuilder('d')
+            ->leftJoin('d.trips', 't', 'WITH', 't.date = :date')
+            ->andWhere('t.id IS NULL')
+            ->andWhere('d.license = :license')
+            ->setParameter('date', $date)
+            ->setParameter('license', $license)
+            ->getQuery()
+            ->getResult(Query::HYDRATE_ARRAY);
+
+    }
 //    /**
 //     * @return Drivers[] Returns an array of Drivers objects
 //     */

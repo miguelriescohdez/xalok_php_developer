@@ -3,9 +3,99 @@
 {% block title %}New Trip{% endblock %}
 
 {% block body %}
-    <h1>Create new Trip</h1>
 
-    {{ include('trip/_form.html.twig') }}
+<div class="form-body">
+    <div class="row">
+        <div class="form-holder">
+            <div class="form-content">
+                <div class="form-items">
+                    <h3 class="mb-3">Add New Trip</h3>
+                </div>
 
-    <a href="{{ path('app_trip_index') }}">back to list</a>
+                {{ form_start(form) }}
+                    <div class="col-md-12">
+                        {{ form_row(form.date) }}
+                    </div>
+                    <div class="col-md-12 d-none" id="available-vehicles">
+                        {{ form_row(form.vehicle) }}
+                    </div>
+                    <div class="col-md-12 d-none" id="available-drivers">
+                        {{ form_row(form.driver) }}
+                    </div>
+                    <div id="alert" class="col-md-12 mt-3 alert alert-warning" role="alert">
+                        Seleccione la fecha para ver los coches disponibles
+                    </div>
+                    <div class="d-flex align-items-center justify-content-end mt-4">
+                        <button id="submit" class="btn btn-primary mt-2 d-none">{{ button_label|default('Save') }}</button>
+                    </div>
+                {{ form_end(form) }}
+
+    	        <div class="d-flex align-items-center justify-content-center my-4">
+                    <a class="btn btn-primary" href="{{ path('app_trip_index') }}">back to list</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+     
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const dateInput = document.querySelector('#trip_date');
+        const vehiclesDiv = document.querySelector('#available-vehicles');
+        const alertDiv = document.querySelector('#alert');
+        const driversDiv = document.querySelector('#available-drivers');
+ 
+        const submitButton = document.querySelector('#submit');
+
+        dateInput.addEventListener('change', function() {
+            const dateSelected = dateInput.value;
+            fetch(`/requests/get-available-vehicles?date=${dateSelected}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`Error al obtener coches disponibles: ${response.status}`);
+                    }
+                    return response.text();
+                })
+                .then(data => {
+                    vehiclesDiv.innerHTML = data;
+                    vehiclesDiv.classList.remove('d-none');
+                    alertDiv.innerHTML = 'Es necesario seleccionar un coche para seguir con el proceso';
+                    showDrivers();
+                })
+                .catch(error => console.error(error));
+        });
+
+        function showDrivers(){
+            const tripVehicle = document.querySelector('#trip_vehicle');
+            tripVehicle.addEventListener('change', function() {
+                const dateSelected = dateInput.value;
+                const selectedOption = this.options[this.selectedIndex];
+                const dataLicense = selectedOption.getAttribute('data-license');
+                fetch(`/requests/get-available-drivers?date=${dateSelected}&license=${dataLicense}`)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(`Error al obtener los conductores disponibles: ${response.status}`);
+                        }
+                        return response.text();
+                    })
+                    .then(data => {
+                        driversDiv.innerHTML = data;
+                        driversDiv.classList.remove('d-none');
+                        alertDiv.innerHTML = 'A continuación, selecciona el conductor';
+                        showSubmitButton();
+                    })
+                    .catch(error => console.error(error));
+            });
+        }
+
+        function showSubmitButton(){
+            const driverInput = document.querySelector('#trip_driver');
+            driverInput.addEventListener('change', function() {
+                alertDiv.classList.add('d-none');
+                submitButton.classList.remove('d-none');
+            });
+        }
+    });
+</script>
+
 {% endblock %}

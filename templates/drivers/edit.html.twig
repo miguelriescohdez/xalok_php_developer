@@ -3,11 +3,22 @@
 {% block title %}Edit Drivers{% endblock %}
 
 {% block body %}
-    <h1>Edit Drivers</h1>
-
-    {{ include('drivers/_form.html.twig', {'button_label': 'Update'}) }}
-
-    <a href="{{ path('app_drivers_index') }}">back to list</a>
-
-    {{ include('drivers/_delete_form.html.twig') }}
+<div class="form-body">
+    <div class="row">
+        <div class="form-holder">
+            <div class="form-content">
+                <div class="form-items">
+                    <div class="d-flex align-items-center justify-content-between my-4">
+                        <h3 class="m-0">Edit Driver</h3>
+                        {{ include('drivers/_delete_form.html.twig') }}
+                    </div>
+                    {{ include('drivers/_form.html.twig', {'button_label': 'Update'}) }}
+                </div>
+                <div class="d-flex align-items-center justify-content-center my-4">
+                    <a class="btn btn-primary" href="{{ path('app_drivers_index') }}">back to list</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

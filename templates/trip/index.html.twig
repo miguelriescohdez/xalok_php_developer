@@ -3,24 +3,31 @@
 {% block title %}Trip index{% endblock %}
 
 {% block body %}
-    <h1>Trip index</h1>
-
-    <table class="table">
+    
+    <div class="container">
+    <div class="d-flex justify-content-between align-items-center mt-4">
+        <h1 class="text-light">Trip index</h1> 
+        <a class="btn btn-primary py-2 px-4" href="{{ path('app_trip_new') }}">Create new</a>
+    </div>
+    <table class="my-4 table table-light table-striped">
         <thead>
             <tr>
                 <th>Id</th>
+                <th>Driver</th>
+                <th>Vehicle</th>
                 <th>Date</th>
-                <th>actions</th>
+                <th class="d-none">actions</th>
             </tr>
         </thead>
         <tbody>
         {% for trip in trips %}
             <tr>
                 <td>{{ trip.id }}</td>
+                <td>{{ trip.driver.name }} {{ trip.driver.surname }}</td>
+                <td>{{trip.vehicle.brand}} {{trip.vehicle.model}}</td>
                 <td>{{ trip.date ? trip.date|date('Y-m-d') : '' }}</td>
-                <td>
-                    <a href="{{ path('app_trip_show', {'id': trip.id}) }}">show</a>
-                    <a href="{{ path('app_trip_edit', {'id': trip.id}) }}">edit</a>
+                <td class="d-none">
+                    <a class="btn btn-primary " href="{{ path('app_trip_edit', {'id': trip.id}) }}">editar</a>
                 </td>
             </tr>
         {% else %}
@@ -31,5 +38,6 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_trip_new') }}">Create new</a>
+    
+    </div>
 {% endblock %}

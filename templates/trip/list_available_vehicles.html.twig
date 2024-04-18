@@ -1,0 +1,8 @@
+{# list_available_vehicles.html.twig #}
+
+<select id="trip_vehicle" name="trip[vehicle]">
+    <option value="">Selecciona un vehículo</option>
+    {% for itemVehicle in vehicles %}
+    <option value="{{ itemVehicle.id }}" data-license="{{ itemVehicle.license_required }}">{{ itemVehicle.brand }} {{ itemVehicle.model }}</option>
+    {% endfor %}
+</select>

@@ -29,7 +29,9 @@ class TripController extends AbstractController
         $form = $this->createForm(TripType::class, $trip);
         $form->handleRequest($request);
 
+        
         if ($form->isSubmitted() && $form->isValid()) {
+
             $entityManager->persist($trip);
             $entityManager->flush();
 

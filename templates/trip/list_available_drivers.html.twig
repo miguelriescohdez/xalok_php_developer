@@ -1,0 +1,8 @@
+{# list_available_vehicles.html.twig #}
+
+<select id="trip_driver" name="trip[driver]">
+    <option value="">Selecciona un conductor</option>
+    {% for itemDriver in drivers %}
+    <option value="{{ itemDriver.id }}">{{ itemDriver.name }} {{ itemDriver.surname }}</option>
+    {% endfor %}
+</select>
